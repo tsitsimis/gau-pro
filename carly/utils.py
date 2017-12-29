@@ -1,6 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.stats import multivariate_normal
+from carly import kernels
 
 
 def predict(x_star, sigma_n, A, X, y):
@@ -10,63 +9,24 @@ def predict(x_star, sigma_n, A, X, y):
     return mean_pred, sigma_pred
 
 
-def se_matrix(x1, x2=None, scale=1):
-    n1 = np.shape(x1)[0]
+def kernel_matrix(ker, x1, x2=None):
     if x2 is None:
-        matrix = np.zeros((n1, n1))
-        for i in range(n1):
-            for j in range(n1):
-                matrix[i, j] = np.exp(-0.5 * np.linalg.norm(x1[i] - x1[j]) ** 2 / scale)
-        return matrix
+        x2 = x1
 
-    n2 = np.shape(x2)[0]
+    if ker == 'se':
+        ker = kernels.se_kernel
+
+    n1 = x1.shape[0]
+    n2 = x2.shape[0]
     matrix = np.zeros((n1, n2))
     for i in range(n1):
         for j in range(n2):
-            matrix[i, j] = np.exp(-0.5 * np.linalg.norm(x1[i] - x2[j]) ** 2 / scale)
-    return matrix
-
-
-def min_matrix(x1):
-    n1 = np.shape(x1)[0]
-    matrix = np.zeros((n1, n1))
-    for i in range(n1):
-        for j in range(n1):
-            matrix[i, j] = np.min([x1[i], x1[j]]) - x1[i] * x1[j]
+            matrix[i, j] = ker(x1[i], x2[j])
     return matrix
 
 
 def objective(x):
     return x * np.sin(x)
-
-
-def plot_mvn():
-    w1 = np.linspace(-5, 5, 100)
-    w2 = np.linspace(-5, 5, 100)
-    W1, W2 = np.meshgrid(w1, w2)
-    grid = np.empty(W1.shape + (2,))
-    grid[:, :, 0] = W1
-    grid[:, :, 1] = W2
-
-    x1 = 3
-    x2 = 3.1
-    cov = [[1, np.exp(-0.5 * (x1 - x2) ** 2)], [np.exp(-0.5 * (x1 - x2) ** 2), 1]]
-    pdf = multivariate_normal([0, 0], cov)
-
-    plt.contour(W1, W2, pdf.pdf(grid), 3, colors='k')
-    plt.grid(alpha=0.5)
-    plt.show()
-
-
-def plot_gp_samples(x_test, scale=1, n_samples=1):
-    n_test = x_test.shape[0]
-
-    mu = np.zeros(n_test)
-    cov = se_matrix(x_test, scale=scale)
-    samples = np.random.multivariate_normal(mu, cov, n_samples)
-
-    for i in range(n_samples):
-        plt.plot(x_test, samples[i, :], marker='')
 
 
 def logistic(x):

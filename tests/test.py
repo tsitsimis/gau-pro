@@ -9,7 +9,7 @@ x_lim = [0, 20]
 n_train = 10
 x_train = np.random.uniform(x_lim[0], x_lim[1], n_train)
 f_train = uu.objective(x_train)
-sigma_n = 0.2
+sigma_n = 0.0
 noise = np.random.normal(0, sigma_n, n_train)
 f_train += noise
 
@@ -18,7 +18,8 @@ n_test = 200
 x_test = np.linspace(x_lim[0], x_lim[1], n_test)
 
 # fit
-model = carly.Regression('sqexp', sigma_n=sigma_n)
+ker = lambda x, y: np.exp(-0.5 * np.linalg.norm(x - y) ** 2 / 1.0)
+model = carly.Regression(ker, sigma_n=sigma_n)
 model.fit(x_train, f_train, x_test)
 
 # pick samples
