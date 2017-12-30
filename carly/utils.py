@@ -14,7 +14,7 @@ def kernel_matrix(ker, x1, x2=None):
         x2 = x1
 
     if ker == 'se':
-        ker = kernels.se_kernel
+        ker = kernels.se_kernel(1.0)
 
     n1 = x1.shape[0]
     n2 = x2.shape[0]
@@ -25,8 +25,13 @@ def kernel_matrix(ker, x1, x2=None):
     return matrix
 
 
-def objective(x):
+def objective1(x):
     return x * np.sin(x)
+
+
+def objective2(x):
+    a = 2.8
+    return 0.1 * (-(x - a) ** 4 + (x - a) ** 3 + 10 * (x - a) ** 2)
 
 
 def logistic(x):
