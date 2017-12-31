@@ -25,11 +25,11 @@ def kernel_matrix(ker, x1, x2=None):
     return matrix
 
 
-def objective1(x):
+def black_box1(x):
     return x * np.sin(x)
 
 
-def objective2(x):
+def black_box2(x):
     a = 2.8
     return 0.1 * (-(x - a) ** 4 + (x - a) ** 3 + 10 * (x - a) ** 2)
 

@@ -2,38 +2,56 @@ import numpy as np
 import carly
 import carly.utils as uu
 import carly.kernels as kernels
-import carly.baysian_optimizer as boplt
 import carly.acquisition_functions as acq
-
+import matplotlib.pyplot as plt
 
 # train inputs
-x_lim = [0, 6.5]
-n_train = 1
+input_lim = [0, 6.5]
+n_train = 0
 np.random.seed(42)
-x_train = np.random.uniform(x_lim[0], x_lim[1], n_train)
-f_train = uu.objective2(x_train)
-sigma_n = 0.0
-noise = np.random.normal(0, sigma_n, n_train)
-f_train += noise
+X = np.random.uniform(input_lim[0], input_lim[1], n_train)
+
+black_box = uu.black_box2
+y = black_box(X)
 
 # test inputs
 n_test = 200
-x_test = np.linspace(x_lim[0], x_lim[1], n_test)
+x_test = np.linspace(input_lim[0], input_lim[1], n_test)
 
-# fit
-model = carly.Regression(kernels.se_kernel(scale=1), sigma_n=sigma_n)
-model.fit(x_train, f_train, x_test)
+# model
+ker = kernels.se_kernel(1.0)
+model = carly.Regression(x_test, ker)
+model.fit(X, y)
 
-# pick samples
-# samples = model.pick_samples(1)
+# optimize + animate
+# acq_func = carly.acquisition_functions.mu_plus_cov_proba
+optimizer = carly.BayesianOptimizer(model, black_box)
 
-# acquisition function
-model.set_acquisition(acq.simple(1.0))
-# kappa = 1
-# acq_fun = model.mu + kappa * model.cov[np.diag_indices_from(model.cov)]
-# model.acq = acq_fun
-# acq_fun = acq_fun - np.min(acq_fun)
-# acq_fun = acq_fun / np.sum(acq_fun)
+fig, ax = plt.subplots(2, 1)
+plt.ion()
+t = np.linspace(input_lim[0], input_lim[1], 100)
 
-ploter = boplt.BayesianOptPlot(model)
-ploter.draw()
+for i in range(10):
+    optimizer.update()
+
+    # plot
+    ax[0].cla()
+    ax[1].cla()
+
+    ax[0].plot(t, uu.black_box2(t), c='k', linestyle=':')
+    ax[0].scatter(optimizer.history[:, 0], optimizer.history[:, 1], marker='+', c='r', s=120, zorder=10)
+    ax[0].plot(x_test, model.mu, c='k', zorder=10)
+    ax[0].fill_between(model.X_test, model.mu - 2 * np.sqrt(np.abs(model.cov[np.diag_indices_from(model.cov)])),
+                       model.mu + 2 * np.sqrt(np.abs(model.cov[np.diag_indices_from(model.cov)])),
+                       facecolor='gray',
+                       alpha=0.5)
+
+    ax[1].plot(x_test, optimizer.acquisition_func(model.mu, model.cov), c='g', linewidth=2)
+    if optimizer.i_next is not None:
+        ax[1].scatter(optimizer.x_next, optimizer.acquisition_func(model.mu, model.cov)[optimizer.i_next],
+                      marker='v', c='r', s=120, zorder=10)
+    plt.show()
+    plt.pause(0.2)
+
+plt.ioff()
+plt.show()
