@@ -18,8 +18,8 @@ n_test = 200
 x_test = np.linspace(x_lim[0], x_lim[1], n_test)
 
 # fit
-model = carly.Regression('se', sigma_n=sigma_n)
-model.fit(x_train, f_train, x_test)
+model = carly.Regression(x_test, 'se', sigma_n=sigma_n)
+model.fit(x_train, f_train)
 
 # pick samples
 samples = model.pick_samples(1)
@@ -27,6 +27,7 @@ samples = model.pick_samples(1)
 # plot
 t = np.linspace(x_lim[0], x_lim[1], 100)
 plt.plot(t, uu.black_box1(t), c='k', linestyle=':')
+
 plt.scatter(x_train, f_train, marker='+', c='r', s=120, zorder=10)
 plt.plot(x_test, model.mu, c='k', zorder=10)
 plt.show()
