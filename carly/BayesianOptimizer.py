@@ -4,7 +4,7 @@ import carly.policies as pol
 
 
 class BayesianOptimizer:
-    def __init__(self, model, black_box, acquisition_func=af.mu_plus_cov(1.0), policy=pol.max_policy()):
+    def __init__(self, model, black_box, acquisition_func=af.mu_plus_cov, policy=pol.max_policy):
         self.model = model
         self.black_box = black_box
         self.acquisition_func = acquisition_func
@@ -30,4 +30,3 @@ class BayesianOptimizer:
         x_next = self.model.X_test[i_next]  # + np.random.normal(0, 0.0)  # avoid choosing the same x twice
         self.i_next = i_next
         self.x_next = x_next
-

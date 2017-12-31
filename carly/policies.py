@@ -1,9 +1,15 @@
 import numpy as np
 
 
-def max_policy():
-    return lambda acq: np.argmax(acq)
+def max_policy(acq):
+    return np.argmax(acq)
 
 
-def proba_policy():
-    return lambda acq: np.random.choice(acq.shape[0], 1, p=acq)[0]
+def proba_policy(beta):
+    def __proba_policy(acq):
+        pdf = acq
+        # beta = 1.0
+        pdf = np.exp(beta * pdf)
+        pdf = pdf / np.sum(pdf)
+        return np.random.choice(acq.shape[0], 1, p=pdf)[0]
+    return __proba_policy

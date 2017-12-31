@@ -3,6 +3,7 @@ import carly
 import carly.utils as uu
 import carly.kernels as kernels
 import carly.acquisition_functions as acq
+import carly.policies as pol
 import matplotlib.pyplot as plt
 
 # train inputs
@@ -24,8 +25,7 @@ model = carly.Regression(x_test, ker)
 model.fit(X, y)
 
 # optimize + animate
-# acq_func = carly.acquisition_functions.mu_plus_cov_proba
-optimizer = carly.BayesianOptimizer(model, black_box)
+optimizer = carly.BayesianOptimizer(model, black_box, acquisition_func=acq.mu_plus_cov(1.0), policy=pol.max_policy)
 
 fig, ax = plt.subplots(2, 1)
 plt.ion()
