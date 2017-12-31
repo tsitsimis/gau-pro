@@ -25,7 +25,9 @@ model = carly.Regression(x_test, ker)
 model.fit(X, y)
 
 # optimize + animate
-optimizer = carly.BayesianOptimizer(model, black_box, acquisition_func=acq.mu_plus_cov(1.0), policy=pol.max_policy)
+optimizer = carly.BayesianOptimizer(model, black_box,
+                                    acquisition_func=acq.mu_plus_cov(kappa=1.0),
+                                    policy=pol.proba_policy(beta=5.0))
 
 fig, ax = plt.subplots(2, 1)
 plt.ion()
