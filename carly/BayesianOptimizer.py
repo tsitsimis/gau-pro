@@ -4,7 +4,7 @@ import carly.policies as pol
 
 
 class BayesianOptimizer:
-    def __init__(self, model, black_box, acquisition_func=af.mu_plus_cov, policy=pol.max_policy):
+    def __init__(self, model, black_box, acquisition_func, policy):
         self.model = model
         self.black_box = black_box
         self.acquisition_func = acquisition_func
@@ -18,14 +18,14 @@ class BayesianOptimizer:
         self.history = np.concatenate((self.history, model_history), axis=0)
 
     def update(self):
-        self.find_next_x()                                      # find next x
+        self.__find_next_x()                                      # find next x
         y_next = self.black_box(self.x_next)                    # sample the black box function
         self.model.augment_train(self.x_next, y_next)           # augment the data
         self.model.fit(self.model.X, self.model.y)  # update the GP
 
         self.history = np.append(self.history, np.array([[self.x_next, y_next]]), axis=0)
 
-    def find_next_x(self):
+    def __find_next_x(self):
         i_next = self.policy(self.acquisition_func(self.model.mu, self.model.cov))
         x_next = self.model.X_test[i_next]  # + np.random.normal(0, 0.0)  # avoid choosing the same x twice
         self.i_next = i_next

@@ -57,7 +57,7 @@ def lin_reg_predict(x_star, w_grid, X1, X2, y1, y2, sigma_prior):
 
 def erf(x):
     sign = np.sign(x)
-    x = abs(x)
+    x = np.abs(x)
 
     # constants
     a1 = 0.254829592
