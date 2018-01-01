@@ -3,12 +3,12 @@ from setuptools import setup
 
 setup(name='carly',
       packages=['carly'],
-      version='0.1.1',
+      version='0.2.0',
       description='A Python implementation of the Gaussian Processes framework',
       author='Theodore Tsitsimis',
       author_email='th.tsitsimis@gmail.com',
       url='https://github.com/tsitsimis/carly',
-      download_url='https://github.com/tsitsimis/carly/archive/0.1.1.tar.gz',
+      download_url='https://github.com/tsitsimis/carly/archive/0.2.0.tar.gz',
       keywords=['gaussian-process', 'machine-learning'],
       license='MIT',
       classifiers=[
