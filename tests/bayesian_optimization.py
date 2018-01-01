@@ -26,16 +26,14 @@ model.fit(X, y)
 
 # optimize + animate
 optimizer = carly.BayesianOptimizer(model, black_box,
-                                    acquisition_func=acq.mu_plus_cov(0.01),
+                                    acquisition_func=acq.PI(0.001),
                                     policy=pol.max_policy)
 
 fig, ax = plt.subplots(2, 1)
 plt.ion()
 t = np.linspace(input_lim[0], input_lim[1], 100)
 
-for i in range(10):
-    optimizer.update()
-
+for i in range(15):
     # plot
     ax[0].cla()
     ax[1].cla()
@@ -52,6 +50,9 @@ for i in range(10):
     if optimizer.i_next is not None:
         ax[1].scatter(optimizer.x_next, optimizer.acquisition_func(model.mu, model.cov)[optimizer.i_next],
                       marker='v', c='r', s=120, zorder=10)
+
+    optimizer.update()
+
     plt.show()
     plt.pause(1)
 
