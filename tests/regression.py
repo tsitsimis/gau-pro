@@ -18,7 +18,7 @@ n_test = 200
 x_test = np.linspace(x_lim[0], x_lim[1], n_test)
 
 # fit
-model = carly.Regression(x_test, 'se', sigma_n=sigma_n)
+model = carly.Regression(x_test, 'min', sigma_n=sigma_n)
 model.fit(x_train, f_train)
 
 # pick samples

@@ -9,12 +9,14 @@ def predict(x_star, sigma_n, A, X, y):
     return mean_pred, sigma_pred
 
 
-def kernel_matrix(ker, x1, x2=None):
+def kernel_matrix(kernel, x1, x2=None):
     if x2 is None:
         x2 = x1
 
-    if ker == 'se':
+    if kernel == 'se':
         ker = kernels.se_kernel(1.0)
+    elif kernel == 'min':
+        ker = kernels.min_kernel()
 
     n1 = x1.shape[0]
     n2 = x2.shape[0]
