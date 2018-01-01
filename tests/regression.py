@@ -1,5 +1,6 @@
 import carly
 import carly.utils as uu
+import carly.kernels as kers
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -18,7 +19,7 @@ n_test = 200
 x_test = np.linspace(x_lim[0], x_lim[1], n_test)
 
 # fit
-model = carly.Regression(x_test, 'min', sigma_n=sigma_n)
+model = carly.Regression(x_test, kers.se_kernel(1.0), sigma_n=sigma_n)
 model.fit(x_train, f_train)
 
 # pick samples
@@ -30,4 +31,6 @@ plt.plot(t, uu.black_box1(t), c='k', linestyle=':')
 
 plt.scatter(x_train, f_train, marker='+', c='r', s=120, zorder=10)
 plt.plot(x_test, model.mu, c='k', zorder=10)
+plt.fill_between(x_test, model.mu - 2 * np.sqrt(model.cov[np.diag_indices_from(model.cov)]),
+                 model.mu + 2 * np.sqrt(model.cov[np.diag_indices_from(model.cov)]), facecolor='gray', alpha=0.5)
 plt.show()

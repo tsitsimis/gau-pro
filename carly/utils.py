@@ -13,17 +13,12 @@ def kernel_matrix(kernel, x1, x2=None):
     if x2 is None:
         x2 = x1
 
-    if kernel == 'se':
-        ker = kernels.se_kernel(1.0)
-    elif kernel == 'min':
-        ker = kernels.min_kernel()
-
     n1 = x1.shape[0]
     n2 = x2.shape[0]
     matrix = np.zeros((n1, n2))
     for i in range(n1):
         for j in range(n2):
-            matrix[i, j] = ker(x1[i], x2[j])
+            matrix[i, j] = kernel(x1[i], x2[j])
     return matrix
 
 
