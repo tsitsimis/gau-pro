@@ -12,6 +12,7 @@ class Regression:
         self.dim = X_test.shape[0]
 
         self.kernel = kernel
+        print('se thelw')
 
         self.sigma_n = sigma_n
         self.X = np.array([])
