@@ -13,12 +13,12 @@ def kernel_matrix(kernel, x1, x2=None):
     if x2 is None:
         x2 = x1
 
-    n1 = x1.shape[0]
-    n2 = x2.shape[0]
+    n1 = x1.shape[1]
+    n2 = x2.shape[1]
     matrix = np.zeros((n1, n2))
     for i in range(n1):
         for j in range(n2):
-            matrix[i, j] = kernel(x1[i], x2[j])
+            matrix[i, j] = kernel(x1[:, i], x2[:, j])
     return matrix
 
 
@@ -29,6 +29,22 @@ def black_box1(x):
 def black_box2(x):
     a = 2.8
     return 0.1 * (-(x - a) ** 4 + (x - a) ** 3 + 10 * (x - a) ** 2)
+
+
+def black_box3(x, axis):
+    sigma1 = 2
+    sigma2 = 1
+    mu1 = 1
+    mu2 = -1
+    # return np.exp(-np.linalg.norm(x, axis=axis) / sigma)
+    mode1 = np.exp(-np.linalg.norm(x - mu1, axis=axis) / sigma1)
+    mode2 = np.exp(-np.linalg.norm(x - mu2, axis=axis) / sigma2)
+    return mode1 + mode2
+
+
+def black_box4(x):
+    a = 10
+    return 1 / (1 + np.exp(-a*(x - 3)))
 
 
 def logistic(x):

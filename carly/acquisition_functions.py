@@ -2,7 +2,7 @@ import numpy as np
 import carly.utils as uu
 
 
-# μ + κ*σ
+# mu + k*sigma
 def mu_plus_cov(kappa):
     def __acq_func(mu, cov):
         return mu + kappa * cov[np.diag_indices_from(cov)]
@@ -10,8 +10,10 @@ def mu_plus_cov(kappa):
 
 
 # Probability of Improvement
-def PI(xi):
+def PI(ksi):
     def __acq_func(mu, cov):
-        mu_plus = np.max(mu)
-        return uu.normal_cdf((mu - mu_plus - xi) / cov[np.diag_indices_from(cov)])
+        mu_plus = np.max(mu).reshape((1, 1))
+        n_test = cov[np.diag_indices_from(cov)].shape[0]
+        cov_diag = cov[np.diag_indices_from(cov)].reshape((n_test, 1))
+        return uu.normal_cdf((mu - mu_plus - ksi) / cov_diag)
     return __acq_func
