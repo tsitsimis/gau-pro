@@ -1,7 +1,7 @@
 <p align="center"><img width="40%" src="images/gpimg.png"></p>
 
 
-# carly
+# gau-pro
 
 A Python implementation of the Gaussian Processes framework with Bayesian Optimization.
 Fit noiseless or noisy data and use existing or custom kernels.
