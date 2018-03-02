@@ -13,3 +13,9 @@ Bayesian optimization module using existing acquisition functions (μ+kσ, PI) o
 # Installation
 
 pip install gaupro
+
+# References
+
+Gaussian Processes for Machine Learning book  
+Carl Edward Rasmussen and Christopher K. I. Williams  
+http://www.gaussianprocess.org/gpml/
