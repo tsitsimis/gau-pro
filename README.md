@@ -1,4 +1,4 @@
-<p align="center"><img width="40%" src="images/gpimg2.png"></p>
+<p align="center"><img width="60%" src="images/gpimg2.png"></p>
 
 
 # gau-pro
