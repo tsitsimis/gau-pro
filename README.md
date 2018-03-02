@@ -1,3 +1,6 @@
+<p align="center"><img width="90%" src="images/gpimg.png"></p>
+
+
 # carly
 
 A Python implementation of the Gaussian Processes framework with Bayesian Optimization.
