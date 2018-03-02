@@ -1,9 +1,9 @@
 import numpy as np
-import carly
-import carly.utils as uu
-import carly.kernels as kernels
-import carly.acquisition_functions as acq
-import carly.policies as pol
+import gaupro
+import gaupro.utils as uu
+import gaupro.kernels as kernels
+import gaupro.acquisition_functions as acq
+import gaupro.policies as pol
 import matplotlib.pyplot as plt
 
 # train inputs
@@ -24,13 +24,13 @@ x_test = np.linspace(input_lim[0], input_lim[1], n_test).reshape((d, n_test))
 
 # model
 ker = kernels.se_kernel(0.3)
-model = carly.Regression(x_test, ker)
+model = gaupro.Regressor(x_test, ker)
 model.fit(X, y)
 
 # optimize + animate
-optimizer = carly.BayesianOptimizer(model, black_box,
-                                    acquisition_func=acq.PI(0.001),
-                                    policy=pol.max_policy)
+optimizer = gaupro.BayesianOptimizer(model, black_box,
+                                     acquisition_func=acq.PI(0.001),
+                                     policy=pol.max_policy)
 
 fig, ax = plt.subplots(2, 1)
 plt.ion()

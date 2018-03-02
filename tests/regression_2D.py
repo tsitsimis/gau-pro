@@ -1,6 +1,6 @@
-import carly
-import carly.utils as uu
-import carly.kernels as kers
+import gaupro
+import gaupro.utils as uu
+import gaupro.kernels as kers
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D
@@ -27,7 +27,7 @@ Y_vec = np.resize(Y, (1, n_test_x * n_test_y))
 x_test = np.concatenate((X_vec, Y_vec), axis=0)
 
 # fit
-model = carly.Regression(x_test, kers.se_kernel(1.0))
+model = gaupro.Regressor(x_test, kers.se_kernel(1.0))
 model.fit(x_train, f_train)
 mu_vec = model.mu.reshape((n_test_x, n_test_y))
 
