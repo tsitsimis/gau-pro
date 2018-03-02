@@ -1,4 +1,4 @@
-<p align="center"><img width="90%" src="images/gpimg.png"></p>
+<p align="center"><img width="40%" src="images/gpimg.png"></p>
 
 
 # carly
