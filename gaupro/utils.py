@@ -22,26 +22,6 @@ def kernel_matrix(kernel, x1, x2=None):
     return matrix
 
 
-def black_box1(x):
-    return x * np.sin(x)
-
-
-def black_box2(x):
-    a = 2.8
-    return 0.1 * (-(x - a) ** 4 + (x - a) ** 3 + 10 * (x - a) ** 2)
-
-
-def black_box3(x, axis):
-    sigma1 = 2
-    sigma2 = 1
-    mu1 = 1
-    mu2 = -1
-    # return np.exp(-np.linalg.norm(x, axis=axis) / sigma)
-    mode1 = np.exp(-np.linalg.norm(x - mu1, axis=axis) / sigma1)
-    mode2 = np.exp(-np.linalg.norm(x - mu2, axis=axis) / sigma2)
-    return mode1 + mode2
-
-
 def black_box4(x):
     a = 10
     return 1 / (1 + np.exp(-a*(x - 3)))
