@@ -10,10 +10,6 @@ Bayesian optimization module using existing acquisition functions (μ+kσ, PI) o
 
 * numpy
 
-# Installation
-
-pip install gaupro
-
 # References
 
 Gaussian Processes for Machine Learning book  
