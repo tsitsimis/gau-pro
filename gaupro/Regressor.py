@@ -7,10 +7,6 @@ TINY = 1e-5
 
 class Regressor:
     def __init__(self, kernel, sigma_n=0):
-        # self.X_test = X_test
-        # self.n_test = X_test.shape[1]
-        # self.dim = X_test.shape[0]
-
         self.kernel = kernel
 
         self.sigma_n = sigma_n
