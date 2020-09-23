@@ -22,11 +22,6 @@ def kernel_matrix(kernel, x1, x2=None):
     return matrix
 
 
-def black_box4(x):
-    a = 10
-    return 1 / (1 + np.exp(-a*(x - 3)))
-
-
 def logistic(x):
     return 1 / (1 + np.exp(-x))
 
