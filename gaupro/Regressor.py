@@ -34,12 +34,14 @@ class Regressor:
             self.y_train = y
 
         if (self.X_train is None) or (self.y_train is None):
-            print('Error: No train set is specified. Call the function fit() with arguments.')
+            raise ValueError('Error: No train set is specified. Call the function fit() with arguments.')
             return
 
         self.cov_train_train = uu.kernel_matrix(self.kernel, self.X_train) + self.sigma_n ** 2 * np.eye(self.X_train.shape[1])
         self.cov_train_train += TINY * np.eye(self.cov_train_train.shape[0])  # avoid singularities
         self.cov_train_train_inv = np.linalg.inv(self.cov_train_train)
+        
+        return self
 
     def predict(self, X):
         self.X_test = X
@@ -47,12 +49,14 @@ class Regressor:
         self.cov_test_train = uu.kernel_matrix(self.kernel, self.X_test, self.X_train)
         self.cov_train_test = self.cov_test_train.T
 
-        self.mu = np.dot(np.dot(self.cov_test_train, self.cov_train_train_inv), self.y_train)
+        self.mu = self.cov_test_train.dot(self.cov_train_train_inv).dot(self.y_train)
         self.cov = self.cov_test_test - self.cov_test_train.dot(self.cov_train_train_inv.dot(self.cov_train_test))
+        
+        return self.mu, self.cov
 
     def pick_samples(self, n_samples):
         if (self.mu is None) or (self.cov is None):
-            print('Error: The model is not fitted. Call the function fit() before sampling the GP.')
+            raise ValueError('Error: The model is not fitted. Call the function fit() before sampling the GP.')
             return
 
         samples = np.random.multivariate_normal(self.mu.T[0], self.cov, n_samples)
